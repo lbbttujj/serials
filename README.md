@@ -1,1 +1,1 @@
-Сначала 'npm i' потом 'npm start'
+Сначала 'npm i' потом 'npm run start'
