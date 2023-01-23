@@ -56,11 +56,11 @@ export const AddSerialDialog: React.FC<AddSerialDialogProps> = ({
 			onClick={() => {
 				close()
 			}}
-			className='z-10 w-screen h-screen bg-black/60 absolute'
+			className='z-10 w-screen h-full bg-black/60 absolute'
 		>
 			<div
 				onClick={(event) => event.stopPropagation()}
-				className=' p-4  bg-white w-6/12 relative left-1/4 top-16 opacity-100 border-2 border-solid rounded-2xl'
+				className=' p-4  bg-white w-6/12 relative left-1/4 top-16 opacity-100 border-2 border-solid rounded-2xl max-h-4/5 overflow-y-auto'
 			>
 				<form method='POST'>
 					<div className='rounded-md relative flex flex-wrap h-60 flex-col'>
@@ -179,10 +179,16 @@ export const AddSerialDialog: React.FC<AddSerialDialogProps> = ({
 							/>
 						</div>
 					</div>
+					<div className='mb-3 mr-2 mt-3'>
+						<label className='mr-4' htmlFor='tags'>
+							Тэги
+						</label>
+						<input className='border-solid border-2 rounded-xl px-4 py-2 w-6/12 active:border-indigo-700' />
+					</div>
 					<div className='w-full flex flex-col'>
 						<label htmlFor='image'>Выберете изображение</label>
 						{image && (
-							<div className='absolute left-3/4 border-2 border-solid rounded-xl p-2'>
+							<div className='absolute left-3/4 border-2 border-solid rounded-xl p-2 flex'>
 								<img width='100px' src={image}></img>
 							</div>
 						)}
@@ -216,7 +222,6 @@ export const AddSerialDialog: React.FC<AddSerialDialogProps> = ({
 					<button
 						className='px-4 py-2 bg-white w-full text-indigo-700 border-2 rounded-2xl border-solid border-indigo-700 hover:text-white hover:bg-indigo-700'
 						onClick={() => {
-							debugger
 							if (Object.keys(fields).length === 8) {
 								console.log('success')
 								add()

@@ -3,6 +3,7 @@
   "rules": {
     "prettier/prettier": "error"
   },
+  "parser": "@typescript-eslint/parser",
   "plugins": [
     "react",
     "prettier"

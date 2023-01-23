@@ -40,7 +40,7 @@ function App() {
 				) : (
 					<>
 						<ToolBar setIsOpenAddDialog={setIsOpenAddDialog} />
-						<div className='flex justify-center flex-wrap space-x-8'>
+						<div className='flex justify-center flex-wrap space-x-8 max-h-full overflow-y-hidden'>
 							{serials &&
 								serials.map((serial) => {
 									return (
@@ -53,6 +53,7 @@ function App() {
 											rating={serial.rating}
 											country={serial.country}
 											series={serial.series}
+											tags={serial.tags}
 											image={serial.image}
 										/>
 									)

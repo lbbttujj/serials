@@ -1,6 +1,7 @@
 //@ts-nocheck
 import React, { useState } from 'react'
 import { setVisibleSerials } from '../store/serialsSlice'
+import { debounce } from '../utils/debounce'
 import { useAppDispatch, useAppSelector } from '../hooks'
 
 type ToolBarProps = {
@@ -11,16 +12,7 @@ export const ToolBar: React.FC<ToolBarProps> = ({ setIsOpenAddDialog }) => {
 	const dispatch = useAppDispatch()
 	const serials = useAppSelector((state) => state.serials.serials)
 
-	const debounce = (func, time = 500) => {
-		let timeout
-		return function () {
-			const fnCall = () => func.apply(this, arguments)
-			clearTimeout(timeout)
-			timeout = setTimeout(fnCall, time)
-		}
-	}
 	function filter(e) {
-		debugger
 		const payload = e.target.value
 		const newVisibleSerials = serials.filter((item) => {
 			let sum = ''

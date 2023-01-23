@@ -23,7 +23,6 @@ export const fetchSerials = createAsyncThunk(
 	async (thunkAPI) => {
 		const response = await axios.get('http://localhost:3005/serials')
 		console.log(response)
-		debugger
 		return response.data
 	}
 )
@@ -32,7 +31,7 @@ export const deleteSeialById = createAsyncThunk(
 	'serials/deleteSerial',
 	async (id: string, thunkAPI) => {
 		console.log(id)
-		debugger
+
 		const response = await axios.post('http://localhost:3005/delete', { id })
 		thunkAPI.dispatch(fetchSerials())
 		return response.data
@@ -42,11 +41,10 @@ export const deleteSeialById = createAsyncThunk(
 export const addSerial = createAsyncThunk(
 	'serials/addSerial',
 	async (serial: SerialCard, thunkAPI) => {
-		debugger
 		const response = await axios.post('http://localhost:3005/add', {
 			...serial,
 		})
-		debugger
+
 		thunkAPI.dispatch(fetchSerials())
 		return response.data
 	}

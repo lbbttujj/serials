@@ -758,12 +758,20 @@ video {
   display: flex;
 }
 
-.h-screen {
-  height: 100vh;
+.h-full {
+  height: 100%;
 }
 
 .h-60 {
   height: 15rem;
+}
+
+.max-h-full {
+  max-height: 100%;
+}
+
+.max-h-4\/5 {
+  max-height: 80vh;
 }
 
 .w-screen {
@@ -814,6 +822,14 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(2rem * var(--tw-space-x-reverse));
   margin-left: calc(2rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden;
 }
 
 .rounded-2xl {
