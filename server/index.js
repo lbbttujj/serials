@@ -9,7 +9,7 @@ const PORT = process.env.SERVER_PORT
 console.log('PORT: ', PORT)
 
 const app = express()
-app.use(bodyParser.json({ limit: '3mb' }))
+app.use(bodyParser.json({ limit: '5mb' }))
 
 const corsOptions = {
 	origin: 'http://localhost:3000',
