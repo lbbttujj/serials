@@ -1,10 +1,12 @@
-// @ts-nocheck
-import React, { useState, useEffect } from 'react'
-import { SerialCard } from './components/SerialCard'
+import clsx from 'clsx'
+import React, { useEffect, useState } from 'react'
+
+import { SerialCard } from './components/mainSerialPage/SerialCard'
+import { Registration } from './components/registration/Registration'
+import { SerialDialog } from './components/serialDialog/SerialDialog'
+import { ToolBar } from './components/toolbar/ToolBar'
 import { useAppDispatch, useAppSelector } from './hooks'
 import { fetchSerials } from './store/serialsSlice'
-import { AddSerialDialog } from './components/AddSerialDialog'
-import { ToolBar } from './components/ToolBar'
 
 function App() {
 	const serials = useAppSelector((state) => state.serials.visibleSerial)
@@ -13,6 +15,25 @@ function App() {
 	const dispatch = useAppDispatch()
 
 	const [isOpenAddDialog, setIsOpenAddDialog] = useState<boolean>(false)
+	const [isOpenRegistrationDialog, setIsOpenRegistrationDialog] =
+		useState<boolean>(false)
+	const [isEdit, setIsEdit] = useState<boolean>(false)
+	const [editId, setEditId] = useState<string | null>(null)
+
+	const update = (id: string) => {
+		setEditId(id)
+		setIsEdit(true)
+		setIsOpenAddDialog(true)
+	}
+	const add = () => {
+		setEditId(null)
+		setIsOpenAddDialog(true)
+		setIsEdit(false)
+	}
+
+	const openAuthorize = () => {
+		setIsOpenRegistrationDialog(true)
+	}
 
 	useEffect(() => {
 		dispatch(fetchSerials())
@@ -20,7 +41,16 @@ function App() {
 
 	return (
 		<div>
-			{isOpenAddDialog && <AddSerialDialog closeDialog={setIsOpenAddDialog} />}
+			{isOpenAddDialog && (
+				<SerialDialog
+					isEdit={isEdit}
+					closeDialog={setIsOpenAddDialog}
+					editFields={serials.find((serial) => serial._id === editId)}
+				/>
+			)}
+			{isOpenRegistrationDialog && (
+				<Registration closeDialog={setIsOpenRegistrationDialog} />
+			)}
 			<div className='p-8'>
 				{isLoading === 'pending' ? (
 					<div
@@ -39,22 +69,23 @@ function App() {
 					</div>
 				) : (
 					<>
-						<ToolBar setIsOpenAddDialog={setIsOpenAddDialog} />
-						<div className='flex justify-center flex-wrap space-x-8 max-h-full overflow-y-hidden'>
+						<ToolBar add={add} openAuthorize={openAuthorize} />
+						<div className='flex justify-center flex-wrap space-x-8 max-h-full overflow-y-auto'>
 							{serials &&
 								serials.map((serial) => {
 									return (
 										<SerialCard
-											id={serial._id}
+											_id={serial._id}
 											title={serial.title}
 											description={serial.description}
 											years={serial.years}
-											isFinished={serial.isFinished}
 											rating={serial.rating}
 											country={serial.country}
 											series={serial.series}
 											tags={serial.tags}
 											image={serial.image}
+											update={update}
+											userId=''
 										/>
 									)
 								})}

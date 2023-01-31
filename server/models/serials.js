@@ -30,6 +30,9 @@ const Serials = new Schema({
 		type: [String],
 		default: undefined,
 	},
+	userId: {
+		type: String,
+	},
 })
 
 module.exports = model('Serials', Serials)

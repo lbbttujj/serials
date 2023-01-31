@@ -1,21 +1,28 @@
-import React, { useRef } from 'react'
 import clsx from 'clsx'
-import { SerialCard as SerialCardProps } from '../store/types'
-import { useAppDispatch } from '../hooks'
-import { deleteSeialById } from '../store/serialsSlice'
+import React, { useRef } from 'react'
+
+import { ReactComponent as Edit } from '../../assets/edit-icon.svg'
+import { useAppDispatch } from '../../hooks'
+import { deleteSeialById } from '../../store/serialsSlice'
+import { SerialCard as SerialCardProps } from '../../store/types'
 import styles from './SerialCard.module.less'
 
-export const SerialCard: React.FC<SerialCardProps> = ({
-	id,
+export const SerialCard: React.FC<
+	SerialCardProps & {
+		update: (id: string) => void
+	}
+> = ({
+	_id,
 	title,
 	description,
 	years,
 	country,
-	isFinished,
 	rating,
 	series,
 	tags,
 	image,
+	userId,
+	update,
 }) => {
 	const dispatch = useAppDispatch()
 	const fullDescription = useRef<HTMLDivElement>(null)
@@ -44,8 +51,6 @@ export const SerialCard: React.FC<SerialCardProps> = ({
 			fullDescription.current.classList.add('invisible')
 		}
 	}
-	console.log(tags)
-	debugger
 	return (
 		<div
 			className={clsx(
@@ -56,6 +61,10 @@ export const SerialCard: React.FC<SerialCardProps> = ({
 			<div className={styles.imgBlock}>
 				{getImage(image)}
 				<div className={styles.imgBlockTitle}>{title}</div>
+			</div>
+
+			<div onClick={() => update(_id)} className={styles.editButton}>
+				<Edit />
 			</div>
 
 			<hr />
@@ -103,7 +112,7 @@ export const SerialCard: React.FC<SerialCardProps> = ({
 			</div>
 			<button
 				className='w-10/12 absolute px-2 py-1 border-2 rounded-xl bottom-2 border-solid border-red-800 text-red-800 hover:text-white hover:bg-red-800'
-				onClick={() => deleteItem(id)}
+				onClick={() => deleteItem(_id)}
 			>
 				Удалить
 			</button>

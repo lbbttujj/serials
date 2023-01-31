@@ -1,9 +1,8 @@
-//@ts-nocheck
-
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
+
+import axios from '../http'
 import { SerialCard } from './types'
-import axios from 'axios'
 
 type InitialStateType = {
 	serials: SerialCard[]
@@ -21,8 +20,9 @@ const initialState: InitialStateType = {
 export const fetchSerials = createAsyncThunk(
 	'serials/fetchSerials',
 	async (thunkAPI) => {
-		const response = await axios.get('http://localhost:3005/serials')
+		const response = await axios.get('/serials')
 		console.log(response)
+
 		return response.data
 	}
 )
@@ -32,7 +32,9 @@ export const deleteSeialById = createAsyncThunk(
 	async (id: string, thunkAPI) => {
 		console.log(id)
 
-		const response = await axios.post('http://localhost:3005/delete', { id })
+		const response = await axios.post('http://localhost:3005/api/delete', {
+			id,
+		})
 		thunkAPI.dispatch(fetchSerials())
 		return response.data
 	}
@@ -41,7 +43,19 @@ export const deleteSeialById = createAsyncThunk(
 export const addSerial = createAsyncThunk(
 	'serials/addSerial',
 	async (serial: SerialCard, thunkAPI) => {
-		const response = await axios.post('http://localhost:3005/add', {
+		const response = await axios.post('http://localhost:3005/api/add', {
+			...serial,
+		})
+
+		thunkAPI.dispatch(fetchSerials())
+		return response.data
+	}
+)
+
+export const updateSerial = createAsyncThunk(
+	'serials/updateSerial',
+	async (serial: SerialCard, thunkAPI) => {
+		const response = await axios.post('http://localhost:3005/api/update', {
 			...serial,
 		})
 
@@ -54,7 +68,7 @@ export const SerialSlice = createSlice({
 	name: 'serials',
 	initialState,
 	reducers: {
-		setVisibleSerials: (state, action: PayloadAction<SerialCard>) => {
+		setVisibleSerials: (state, action: PayloadAction<SerialCard[]>) => {
 			state.visibleSerial = action.payload
 		},
 	},
@@ -89,6 +103,15 @@ export const SerialSlice = createSlice({
 			state.status = 'success'
 		})
 		builder.addCase(addSerial.rejected, (state) => {
+			state.status = 'error'
+		})
+		builder.addCase(updateSerial.pending, (state) => {
+			state.status = 'pending'
+		})
+		builder.addCase(updateSerial.fulfilled, (state) => {
+			state.status = 'success'
+		})
+		builder.addCase(updateSerial.rejected, (state) => {
 			state.status = 'error'
 		})
 	},

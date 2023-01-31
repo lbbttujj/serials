@@ -1,6 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+const router = require('./router/index')
 require('dotenv').config()
 var cors = require('cors')
 
@@ -20,6 +22,10 @@ app.use(cors(corsOptions))
 
 app.use(express.json())
 
+app.use(cookieParser())
+
+app.use('/api', router)
+
 mongoose.set('strictQuery', false)
 
 async function start() {
@@ -29,9 +35,7 @@ async function start() {
 				console.log('dev server work')
 			})
 		} else {
-			await mongoose.connect(
-				'mongodb://alex:PT8aSPOju7cdyEZV@ac-ufmithl-shard-00-00.g8pipfn.mongodb.net:27017,ac-ufmithl-shard-00-01.g8pipfn.mongodb.net:27017,ac-ufmithl-shard-00-02.g8pipfn.mongodb.net:27017/?ssl=true&replicaSet=atlas-iyslbc-shard-0&authSource=admin&retryWrites=true&w=majority'
-			)
+			await mongoose.connect(process.env.DB_URL)
 			app.listen(PORT, () => {
 				console.log('server work')
 			})
@@ -42,5 +46,3 @@ async function start() {
 }
 
 start()
-
-require('./routes/routes')(app)
